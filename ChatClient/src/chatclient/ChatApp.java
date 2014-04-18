@@ -8,8 +8,10 @@ package chatclient;
 
 import java.rmi.Naming;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 import chatinterface.*;
 import java.io.*;
+import java.rmi.registry.LocateRegistry;
 
 /**
  *
@@ -22,13 +24,19 @@ public class ChatApp {
      */
     public static void main(String[] args) throws RemoteException {
         // TODO code application logic here
-        String userName, msg;
+        String userName, msg, addr;
         int exitCode = 0;
         ServerInterface server = null;
         ClientInterface client = null;
         try {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        server = (ServerInterface) Naming.lookup("//localhost/ChatServer");
+        System.out.print("Please enter the chat's IP address: (localhost for local) ");
+        addr = br.readLine();
+        Registry r = LocateRegistry.getRegistry(addr, 1099);
+        System.out.println("Looking for rmi://" + addr + ":1099" + "/ChatServer");
+        //server = (ServerInterface) Naming.lookup("rmi://" + addr + ":1099" + "/ChatServer");
+        System.out.println("Server was found!");
+        server = (ServerInterface) r.lookup("ChatServer");
         System.out.print("Please enter your username: ");
         userName = br.readLine();
         client =  (ClientInterface) new ChatClient(userName);
