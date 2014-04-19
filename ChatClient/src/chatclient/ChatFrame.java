@@ -44,15 +44,23 @@ public class ChatFrame extends javax.swing.JFrame {
         r = LocateRegistry.getRegistry(addr, 1099);
         server = (ServerInterface) r.lookup("ChatServer");
         client =  (ClientInterface) new ChatClient(userName, this);
-        jDialog1.setVisible(false);
-        server.connect(client);
         connected = true;
+        conectDialog.setVisible(false);   
+        server.connect(client);
+        
     }
     
     public void displayMsg(String sender, String msg)
     {
-        String old = this.jTextPane1.getText();
-        this.jTextPane1.setText(old + sender + ": " + msg + "\n");
+        String old = this.jTextArea2.getText();
+        this.jTextArea2.setText(old + sender + ": " + msg + "\n");
+    }
+    
+    public void clearScreen()
+    {
+        this.jTextArea2.setText("");
+        this.jTextArea1.setText("");
+        this.jTextField2.setText("");
     }
 
     /**
@@ -71,7 +79,7 @@ public class ChatFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDialog1 = new javax.swing.JDialog();
+        conectDialog = new javax.swing.JDialog();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
@@ -79,22 +87,22 @@ public class ChatFrame extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTextPane1 = new javax.swing.JTextPane();
+        jTextArea2 = new javax.swing.JTextArea();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jButton1 = new javax.swing.JButton();
 
-        jDialog1.setTitle("Please enter network information");
-        jDialog1.setAlwaysOnTop(true);
-        jDialog1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        jDialog1.setMinimumSize(new java.awt.Dimension(400, 400));
-        jDialog1.setModal(true);
-        jDialog1.addWindowListener(new java.awt.event.WindowAdapter() {
+        conectDialog.setTitle("Please enter network information");
+        conectDialog.setAlwaysOnTop(true);
+        conectDialog.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        conectDialog.setMinimumSize(new java.awt.Dimension(400, 400));
+        conectDialog.setModal(true);
+        conectDialog.addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 onDialogClosing(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
-                jDialog1WindowOpened(evt);
+                conectDialogWindowOpened(evt);
             }
         });
 
@@ -169,25 +177,29 @@ public class ChatFrame extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
-        jDialog1.getContentPane().setLayout(jDialog1Layout);
-        jDialog1Layout.setHorizontalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jDialog1Layout.createSequentialGroup()
+        javax.swing.GroupLayout conectDialogLayout = new javax.swing.GroupLayout(conectDialog.getContentPane());
+        conectDialog.getContentPane().setLayout(conectDialogLayout);
+        conectDialogLayout.setHorizontalGroup(
+            conectDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, conectDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
-        jDialog1Layout.setVerticalGroup(
-            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jDialog1Layout.createSequentialGroup()
+        conectDialogLayout.setVerticalGroup(
+            conectDialogLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(conectDialogLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setTitle("Chat Window");
         addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                onWindowClosed(evt);
+            }
             public void windowClosing(java.awt.event.WindowEvent evt) {
                 onWindowClosing(evt);
             }
@@ -196,11 +208,12 @@ public class ChatFrame extends javax.swing.JFrame {
             }
         });
 
+        jScrollPane2.setToolTipText("");
         jScrollPane2.setViewportBorder(javax.swing.BorderFactory.createTitledBorder(null, "Teh Chat", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Console", 0, 18))); // NOI18N
 
-        jTextPane1.setToolTipText("");
-        jTextPane1.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
-        jScrollPane2.setViewportView(jTextPane1);
+        jTextArea2.setColumns(20);
+        jTextArea2.setRows(5);
+        jScrollPane2.setViewportView(jTextArea2);
 
         jTextArea1.setColumns(20);
         jTextArea1.setRows(5);
@@ -248,7 +261,7 @@ public class ChatFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        // Logic for the Send Button
         String msg;
         try {
             msg = this.jTextArea1.getText().replace("\n", "");
@@ -296,17 +309,18 @@ public class ChatFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void jDialog1WindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_jDialog1WindowOpened
+    private void conectDialogWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_conectDialogWindowOpened
         // TODO add your handling code here:
-    }//GEN-LAST:event_jDialog1WindowOpened
+    }//GEN-LAST:event_conectDialogWindowOpened
 
     private void onWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onWindowOpened
         // Logic for the chat window
-        jTextPane1.setEditable(false);
+        jTextArea2.setEditable(false);
+        
         jTextArea1.requestFocus();
         while (!connected)
         {
-            jDialog1.setVisible(true);
+            conectDialog.setVisible(true);
         }
     }//GEN-LAST:event_onWindowOpened
 
@@ -319,6 +333,8 @@ public class ChatFrame extends javax.swing.JFrame {
             server.disconnect(client);
             System.out.println("Disconnecting from server...");
             connected = false;
+            clearScreen();
+            conectDialog.setVisible(true);
         }
         }
         catch (RemoteException e )
@@ -367,6 +383,12 @@ public class ChatFrame extends javax.swing.JFrame {
         
     }//GEN-LAST:event_onEnterReleasedTextField2
 
+    private void onWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_onWindowClosed
+        // TODO add your handling code here:
+        
+        
+    }//GEN-LAST:event_onWindowClosed
+
     /**
      * @param args the command line arguments
      */
@@ -413,17 +435,17 @@ public class ChatFrame extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JDialog conectDialog;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JTextArea jTextArea2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextPane jTextPane1;
     // End of variables declaration//GEN-END:variables
 }
