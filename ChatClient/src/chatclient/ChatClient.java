@@ -17,10 +17,12 @@ import java.rmi.server.UnicastRemoteObject;
 public class ChatClient extends UnicastRemoteObject implements ClientInterface {
     
     private final String userName;
+    private final ChatFrame frame;
     
-    public ChatClient(String userName) throws RemoteException
+    public ChatClient(String userName, ChatFrame frame) throws RemoteException
     {
         this.userName = userName;
+        this.frame = frame;
     }
     
    @Override
@@ -31,7 +33,8 @@ public class ChatClient extends UnicastRemoteObject implements ClientInterface {
    @Override
    public void displayMsg(String sender, String msg) throws RemoteException
    {
-       System.out.println(sender + ": " + msg);
+       this.frame.displayMsg(sender, msg);
+       System.out.println(sender +  ": " + msg);
    }
     
     
