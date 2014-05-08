@@ -6,10 +6,15 @@
 
 package javasocketpm;
 
+import naming.*;
+import stubs.*;
+
 /**
  *
  * @author Marlon
  */
+
+
 public class JavaSocketPM {
 
     /**

@@ -37,7 +37,7 @@ public class ChatServer {
            command = rd.readLine();
        }
        
-       r.unbind("ChatServer");
+       //r.unbind("ChatServer");
        Chat.unexportObject(chatServer, false);
       
     } catch (Exception e) {

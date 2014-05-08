@@ -17,6 +17,20 @@ public class Stub {
     
     Object proxy = new Object();
     
+    
+    
+    /**
+     * Exporta um objeto remoto para fazê-lo disponivel a acesso remoto através da porta 1099
+     * @param o objeto remoto que vai ser convertido para uma stub
+     * @return uma stub do objeto remoto (feita com proxy dinâmico)
+     */
+    public static Stub exportObject(Object o)
+    {
+        return null;
+    }
+    
+    
+    
     public Stub(Class remoteClass)
     {
         //TODO - de alguma maneira esse cara aqui vai fazer a conexão do cliente com o servidor...
@@ -24,11 +38,5 @@ public class Stub {
                 new ConnectionHandler(proxy));
     }
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
     
 }
