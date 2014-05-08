@@ -17,6 +17,7 @@ public class JavaSocketPM {
      */
     public static void main(String[] args) {
         Object object = new Object();
+        String hello = "Hey Rodrigo!";
         // TODO code application logic here
     }
     
