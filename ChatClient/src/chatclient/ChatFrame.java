@@ -351,7 +351,7 @@ public class ChatFrame extends javax.swing.JFrame {
         //connection was established.
         if (!connected)
         {
-            System.exit(0);
+            System.exit(exitCode);
         }
     }//GEN-LAST:event_onDialogClosing
 
