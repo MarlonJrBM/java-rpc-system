@@ -16,6 +16,7 @@ public class JavaSocketPM {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        Object object = new Object();
         // TODO code application logic here
     }
     
