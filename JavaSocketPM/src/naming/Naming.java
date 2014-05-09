@@ -25,7 +25,7 @@ public class Naming {
      * @param url Uma url para o cliente se conectar ao servidor
      * @return uma referência ao objeto remoto (Stub)
      */
-    public static Stub lookup(String url)
+    public static Object lookup(String url)
     {
         Stub stub = null;
         try {
@@ -52,7 +52,7 @@ public class Naming {
      * @param name nome identificador do objeto remoto
      * @param stub uma referência para o objeto remoto (uma stub) 
      */
-    public static void bind (String name, Stub stub) throws ClassNotFoundException
+    public static void bind (String name, Object stub) throws ClassNotFoundException
     {
         try {
             //TODO- Lógica de socket para o servidor ficar "disponível", associando
@@ -62,7 +62,7 @@ public class Naming {
             Socket clientSkt = srvr.accept(); 
             ObjectOutputStream outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
             ObjectInputStream inFromClient = new ObjectInputStream(clientSkt.getInputStream());
-            
+            //Stub remoteObject = Stub.exportObject(stub);
  
             outToClient.writeObject(stub);
             

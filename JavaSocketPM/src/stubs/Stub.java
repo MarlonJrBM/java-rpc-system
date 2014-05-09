@@ -17,8 +17,6 @@ public class Stub {
     
     Object proxy = new Object();
     
-    
-    
     /**
      * Exporta um objeto remoto para fazê-lo disponivel a acesso remoto através da porta 1099
      * @param o objeto remoto que vai ser convertido para uma stub
@@ -29,7 +27,16 @@ public class Stub {
         return null;
     }
     
+    public static Stub getStub(Object o)
+    {
+        return null;
+    }
     
+    public static Stub getSkeleton(Object o)
+    {
+        return null;
+    }
+   
     
     public Stub(Class remoteClass)
     {
