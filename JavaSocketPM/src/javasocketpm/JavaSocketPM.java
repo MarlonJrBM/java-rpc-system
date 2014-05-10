@@ -6,6 +6,7 @@
 
 package javasocketpm;
 
+import java.io.Serializable;
 import naming.*;
 import stubs.*;
 
@@ -16,7 +17,7 @@ import stubs.*;
 
 
 
-class Person implements Human
+class Person implements Human, Serializable
 {
     String firstName, lastName;
     int age;
@@ -68,7 +69,7 @@ public class JavaSocketPM {
         String teste = "vsf";
         CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
         
-        Naming.bind("ObjetoRemoto", clone_teste);
+        Naming.bind("ObjetoRemoto", clone);
         
         System.out.println(vinicius.getFirstName());
         System.out.println(clone.getFirstName());

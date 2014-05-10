@@ -25,16 +25,17 @@ public class Naming {
      * @param url Uma url para o cliente se conectar ao servidor
      * @return uma referência ao objeto remoto (Stub)
      */
-    public static Object lookup(String url)
+    public static <T> T lookup(String url)
     {
-        Stub stub = null;
+//        Stub stub = null;
+        T obj = null;
         try {
             //TODO - Lógica do socket para conectar ao servidor através da url
             Socket skt = new Socket(url, 1099);
             ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
             ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
             
-            stub = (Stub) inFromServer.readObject();
+            obj = (T) inFromServer.readObject();
             
             
         } catch (IOException ex) {
@@ -43,7 +44,7 @@ public class Naming {
             Logger.getLogger(Naming.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return stub;
+        return obj;
     }
     
     
@@ -52,7 +53,7 @@ public class Naming {
      * @param name nome identificador do objeto remoto
      * @param stub uma referência para o objeto remoto (uma stub) 
      */
-    public static void bind (String name, Object stub) throws ClassNotFoundException
+    public static<T> void bind (String name, T stub) throws ClassNotFoundException
     {
         try {
             //TODO- Lógica de socket para o servidor ficar "disponível", associando

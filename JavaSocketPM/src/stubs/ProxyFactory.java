@@ -6,20 +6,21 @@
 
 package stubs;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
-import javasocketpm.*;
+import java.lang.reflect.Proxy;
 /**
  *
  * @author Marlon
  */
-public class ProxyFactory {
+public class ProxyFactory implements Serializable {
     
+  
     
-    public static Object getProxy(Class intf, 
-      final Object obj) {
-        return (Object) 
+    public static<T> T getProxy(Class<T> intf, 
+      final T obj) {
+        return (T) 
           Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 new Class[] { intf },
                 new InvocationHandler() {
@@ -29,7 +30,6 @@ public class ProxyFactory {
                     }
                 });
     }
-    
     
     
 }
