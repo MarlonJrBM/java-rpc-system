@@ -31,7 +31,7 @@ public class Naming {
         T obj = null;
         try {
             //TODO - Lógica do socket para conectar ao servidor através da url
-            Socket skt = new Socket(url, 1099);
+            Socket skt = new Socket(url, 9000);
             ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
             ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
             
@@ -60,21 +60,29 @@ public class Naming {
      * @param name nome identificador do objeto remoto
      * @param stub uma referência para o objeto remoto (uma stub) 
      */
-    public static<T> void bind (String name, T stub) throws ClassNotFoundException
+    public static<T> void bind (String name,final T stub) throws ClassNotFoundException
     {
+        
         try {
             //TODO- Lógica de socket para o servidor ficar "disponível", associando
 //    a String name ao Stub stub
             
-            ServerSocket srvr = new ServerSocket(1099);
-            Socket clientSkt = srvr.accept(); 
-            ObjectOutputStream outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
-            ObjectInputStream inFromClient = new ObjectInputStream(clientSkt.getInputStream());
+            Server server = new Server(9000, name, stub);
+            new Thread(server).start();
+
+            try {
+                    Thread.sleep(20 * 100000);
+                }  catch (InterruptedException e) {
+                    e.printStackTrace();
+                    }
+                System.out.println("Stopping Server");
+                server.stop();
+            
+            
             //Stub remoteObject = Stub.exportObject(stub);
             
             
-            outToClient.writeObject(stub);
-            clientSkt.close();
+            
             
         } catch (Exception e)
         {
@@ -83,8 +91,10 @@ public class Naming {
         }
         
     }
+        
+    }
     
     
     
     
-}
+

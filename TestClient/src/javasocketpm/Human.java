@@ -4,18 +4,18 @@
  * and open the template in the editor.
  */
 
-package testclient;
+package javasocketpm;
 
 /**
  *
  * @author Marlon
  */
-public interface Human
-{
+public interface Human {
+    
     public String getFirstName() ;
     
     public String getLastName() ;
     
     public void setName(String first, String last) ; 
+    
 }
-

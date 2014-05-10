@@ -7,6 +7,7 @@
 package javasocketpm;
 
 import java.io.Serializable;
+//import naming.*;
 import naming.*;
 import stubs.*;
 
@@ -33,7 +34,7 @@ public class JavaSocketPM {
         String teste = "vsf";
         CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
         
-        Naming.bind("ObjetoRemoto", clone);
+        Naming.bind("ObjetoRemoto", vinicius);
         
         System.out.println(vinicius.getFirstName());
         System.out.println(clone.getFirstName());

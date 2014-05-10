@@ -7,6 +7,7 @@
 package testclient;
 
 import naming.*;
+import javasocketpm.*;
 
 /**
  *
@@ -20,10 +21,13 @@ public class TestClient {
     public static void main(String[] args) {
         // TODO code application logic here
         
-        CharSequence teste;
-        teste = (CharSequence) Naming.lookup("localhost");
-        System.out.println("teste = " + teste);
-//        Human teste2 = (Human) Naming.lookup("localhost");
+        //CharSequence teste;
+//        teste = (CharSequence) Naming.lookup("localhost");
+//        System.out.println("teste = " + teste);
+        Human teste2 = (Human) Naming.lookup("localhost");
+        System.out.println(teste2.getFirstName());
+        teste2.setName("Marlon", "Marques");
+        System.out.println(teste2.getFirstName());
         
     }
     
