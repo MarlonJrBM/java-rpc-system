@@ -9,6 +9,7 @@ package stubs;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Method;
+import javasocketpm.*;
 /**
  *
  * @author Marlon
@@ -16,9 +17,9 @@ import java.lang.reflect.Method;
 public class ProxyFactory {
     
     
-    public static<T> T getProxy(Class<T> intf, 
-      final T obj) {
-        return (T) 
+    public static Object getProxy(Class intf, 
+      final Object obj) {
+        return (Object) 
           Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 new Class[] { intf },
                 new InvocationHandler() {
@@ -31,11 +32,4 @@ public class ProxyFactory {
     
     
     
-    
-    
-    
-    
 }
-
-
-

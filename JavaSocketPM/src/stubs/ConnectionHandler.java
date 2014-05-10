@@ -20,6 +20,11 @@ public class ConnectionHandler implements InvocationHandler {
     private Object target;
     // esse é o cara do servidor (que tem que ser alcançado através do socket)
  
+    public ConnectionHandler()
+    {
+        
+    }
+    
     public ConnectionHandler(Object target) {
         this.target = target;
     }
@@ -29,7 +34,7 @@ public class ConnectionHandler implements InvocationHandler {
     {
         //TODO - tudo
         
-        return null;
+       return method.invoke(proxy, args);
         
     }
     
