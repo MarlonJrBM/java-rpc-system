@@ -23,13 +23,10 @@ public class ProxyFactory implements Serializable {
         return (T) 
           Proxy.newProxyInstance(obj.getClass().getClassLoader(),
                 new Class[] { intf },
-                new InvocationHandler() {
-                    public Object invoke(Object proxy, Method method, 
-                      Object[] args) throws Throwable {
-                        return method.invoke(obj, args);
-                    }
-                });
+                new ConnectionHandler(obj));
     }
     
     
 }
+
+

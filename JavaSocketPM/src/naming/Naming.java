@@ -35,13 +35,20 @@ public class Naming {
             ObjectOutputStream outToServer = new ObjectOutputStream(skt.getOutputStream());
             ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
             
+          
+            
             obj = (T) inFromServer.readObject();
             
             
-        } catch (IOException ex) {
-            Logger.getLogger(Naming.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Naming.class.getName()).log(Level.SEVERE, null, ex);
+            
+            inFromServer.close();
+            outToServer.close();
+            skt.close();
+            
+        } catch (Exception e)
+        {
+            System.out.println("Deu merda no lookup!");
+            e.printStackTrace();
         }
         
         return obj;
@@ -64,11 +71,15 @@ public class Naming {
             ObjectOutputStream outToClient = new ObjectOutputStream(clientSkt.getOutputStream());
             ObjectInputStream inFromClient = new ObjectInputStream(clientSkt.getInputStream());
             //Stub remoteObject = Stub.exportObject(stub);
- 
-            outToClient.writeObject(stub);
             
-        } catch (IOException ex) {
-            Logger.getLogger(Naming.class.getName()).log(Level.SEVERE, null, ex);
+            
+            outToClient.writeObject(stub);
+            clientSkt.close();
+            
+        } catch (Exception e)
+        {
+            System.out.println("Deu merda no bind!");
+            e.printStackTrace();
         }
         
     }

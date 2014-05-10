@@ -17,43 +17,7 @@ import stubs.*;
 
 
 
-class Person implements Human, Serializable
-{
-    String firstName, lastName;
-    int age;
-    
-    public Person()
-    {
-        this.firstName = "John";
-        this.lastName = "Doe";
-    }
-    
-    public Person(String first, String last)
-    {
-        this.firstName = first;
-        this.lastName = last;     
-    }
-    
-    public String getFirstName()
-    {
-        return this.firstName;
-    }
-    
- 
-    public String getLastName() 
-    {
-        return this.lastName;
-    }
-    
-    public void setName(String first, String last)
-    {
-        this.firstName = first;
-        this.lastName = last;
-    }
-    
-    
-    
-}
+
 
 
 
@@ -74,8 +38,11 @@ public class JavaSocketPM {
         System.out.println(vinicius.getFirstName());
         System.out.println(clone.getFirstName());
         
-        vinicius.setName("Marlon", "Marques");
+        //vinicius.setName("Marlon", "Marques");
         
+        Thread.sleep(1000);
+        
+     
         System.out.println(vinicius.getFirstName());
         System.out.println(clone.getFirstName());
     }

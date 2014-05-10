@@ -6,6 +6,7 @@
 
 package stubs;
 
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -14,16 +15,13 @@ import java.util.Arrays;
  *
  * @author Marlon
  */
-public class ConnectionHandler implements InvocationHandler {
+public class ConnectionHandler implements InvocationHandler, Serializable {
     //Responsável por fazer a conexão com o servidor através dos sockets
     
     private Object target;
     // esse é o cara do servidor (que tem que ser alcançado através do socket)
  
-    public ConnectionHandler()
-    {
-        
-    }
+
     
     public ConnectionHandler(Object target) {
         this.target = target;
@@ -34,7 +32,7 @@ public class ConnectionHandler implements InvocationHandler {
     {
         //TODO - tudo
         
-       return method.invoke(proxy, args);
+       return method.invoke(target, args);
         
     }
     
