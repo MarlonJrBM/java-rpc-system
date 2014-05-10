@@ -15,14 +15,6 @@ import stubs.*;
  */
 
 
-interface Human
-{
-    public String getFirstName() throws Throwable;
-    
-    public String getLastName() throws Throwable;;
-    
-    public void setName(String first, String last) throws Throwable;;  
-}
 
 class Person implements Human
 {
@@ -41,18 +33,18 @@ class Person implements Human
         this.lastName = last;     
     }
     
-    public String getFirstName() throws Throwable
+    public String getFirstName()
     {
         return this.firstName;
     }
     
  
-    public String getLastName() throws Throwable
+    public String getLastName() 
     {
         return this.lastName;
     }
     
-    public void setName(String first, String last) throws Throwable
+    public void setName(String first, String last)
     {
         this.firstName = first;
         this.lastName = last;
@@ -73,9 +65,18 @@ public class JavaSocketPM {
         Person vinicius = new Person("Vinicius", "Grossi");
         Human clone = (Human) ProxyFactory.getProxy(Human.class, vinicius);
         // TODO code application logic here
+        String teste = "vsf";
+        CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
+        
+        Naming.bind("ObjetoRemoto", clone_teste);
         
         System.out.println(vinicius.getFirstName());
-        System.out.println(clone.getLastName());
+        System.out.println(clone.getFirstName());
+        
+        vinicius.setName("Marlon", "Marques");
+        
+        System.out.println(vinicius.getFirstName());
+        System.out.println(clone.getFirstName());
     }
     
     
