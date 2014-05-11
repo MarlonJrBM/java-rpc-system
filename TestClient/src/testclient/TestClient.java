@@ -28,7 +28,9 @@ public class TestClient {
         Human teste2 =  (Human) r.lookup("localhost");
 //        System.out.println(teste2.getFirstName());
         teste2.setName("Marlon", "Marques");
-//        r.disconnectFromRemote();
+        teste2.setName("Rita", "cássia");
+        
+        r.disconnectFromRemote();
         
         
 //        Naming.disconnect();

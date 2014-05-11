@@ -8,6 +8,7 @@ package idmr3;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -23,6 +24,8 @@ public class Registry extends RemoteObject {
     
     
     private Socket skt;
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
     private int port;
     private String addr;
     private ConnectionHandler connectionHandler;
@@ -31,7 +34,8 @@ public class Registry extends RemoteObject {
         this.skt = null;
         this.port = 0;
         this.addr = null;
-       
+        this.oos = null;
+        this.ois = null;   
     }
     
     public Registry (String addr, int port) {
@@ -43,6 +47,8 @@ public class Registry extends RemoteObject {
         this.port = port;
         try {
             skt = new Socket(addr, port);
+            oos = new ObjectOutputStream(skt.getOutputStream());
+            ois = new ObjectInputStream(skt.getInputStream());
             
         } catch (IOException ex) {
             Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
@@ -53,7 +59,11 @@ public class Registry extends RemoteObject {
     {
         if (skt!=null)
             try {
+                oos.writeObject("Bye Bye Server!");
+                oos.close();
+                ois.close();
                 skt.close();
+                
         } catch (IOException ex) {
             Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -64,7 +74,7 @@ public class Registry extends RemoteObject {
     public Object lookup(String name) {
         Object obj = null;
         Class[] interfaces = null;
-        this.connectionHandler = new ConnectionHandler(name, this.skt);
+        this.connectionHandler = new ConnectionHandler(name, this.skt, this.oos, this.ois);
         interfaces = getInterfaces() ; //Lê as interfaces
         System.out.println(interfaces.toString());
         obj =  Proxy.newProxyInstance(interfaces[0].getClassLoader(),
@@ -79,9 +89,9 @@ public class Registry extends RemoteObject {
     {
         Class[] interfaces = null;
         try {
-            ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
+//            ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
             
-            interfaces = (Class[]) inFromServer.readObject();
+            interfaces = (Class[]) ois.readObject();
             
             
          

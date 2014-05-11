@@ -12,18 +12,18 @@ import java.lang.reflect.Method;
  *
  * @author Marlon
  */
-public class RemoteMessage extends RemoteObject {
+public class RemoteMessage extends RemoteObject   {
     
-    Method method;
+    String methodName;
     Object[] args;
     
-    public RemoteMessage(Method method, Object[] args) {
-        this.method = method;
+    public RemoteMessage(String methodName, Object[] args) {
+        this.methodName = methodName;
         this.args = args;
     }
     
-    public Method getMethod() {
-        return this.method;
+    public String getMethod() {
+        return this.methodName;
     }
     
     public Object[] getArgs() {

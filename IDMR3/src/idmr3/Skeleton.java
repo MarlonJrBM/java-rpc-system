@@ -27,10 +27,16 @@ public class Skeleton extends RemoteObject {
     return this.remoteObject.getClass().getInterfaces();
 }
     
-    public  Object runMethod(RemoteMessage message) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
+    public Object runMethod(String methodName, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException
     {
-
-        return message.getMethod().invoke(remoteObject, message.getArgs());
+       Class [] parameterTypes = new Class[args.length];
+       for (int ii=0;ii<args.length;ii++) {
+           parameterTypes[ii] = args[ii].getClass();
+       }
+        Method method = this.remoteObject.getClass().getMethod(methodName, parameterTypes);
+                
+        return method.invoke(remoteObject, args);
+        
     }
     
 }

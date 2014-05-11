@@ -24,7 +24,7 @@ public class ProxyFactory {
         return (Object)
           Proxy.newProxyInstance(intf[0].getClassLoader(),
                 intf,
-                new ConnectionHandler(name,skt));
+                new ConnectionHandler(name,skt, null, null));
     }
     
     

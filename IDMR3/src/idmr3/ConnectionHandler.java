@@ -28,27 +28,34 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
     
     private Socket skt;
     
+    private ObjectOutputStream oos;
+    private ObjectInputStream ois;
+    
     private String name;
     
     private RemoteMessage remoteMessage = null;
     
  
  
-    public ConnectionHandler(String name, Socket skt)
+    public ConnectionHandler(String name, Socket skt, ObjectOutputStream oos, ObjectInputStream ois)
     {
     this.skt = skt;
     this.name = name;
+    this.oos = oos;
+    this.ois = ois;
     }
     
     private Object getRemoteObject() throws IOException, ClassNotFoundException
     {
-        ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
-        return (inFromServer.readObject());
+//        ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
+        return (ois.readObject());
     }
     
     private void sendRemoteObject(Object remoteObject) throws IOException{
-         ObjectOutputStream output = new ObjectOutputStream(skt.getOutputStream());
-         output.writeObject(remoteObject);
+//         ObjectOutputStream output = new ObjectOutputStream(skt.getOutputStream());
+//         output.flush();
+         oos.writeObject(remoteObject);
+//         output.flush();
     }
   
     
@@ -61,8 +68,13 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
 //       return method.invoke(target, args);
         
         //envia método e argumentos para o servidor executar no objeto
-        remoteMessage = new RemoteMessage(method, args);
-//        this.sendRemoteObject(remoteMessage);
+        remoteMessage = new RemoteMessage(method.getName(), args);
+//        Person test = new Person ("marlon", "marques");
+        this.sendRemoteObject(method.getName()); //envia nome do método
+        System.out.println("Escrevi objeto remoto na stream: " + method.getName());
+        this.sendRemoteObject(args); //envia os argumentos
+        System.out.println("Escrevi objeto remoto na stream: " + args[0].toString());
+        System.out.println("Escrevi objeto remoto na stream: " + args[1].toString());
         
         //E se um dos args for um objeto remoto do cliente? 
         //Tem que fazer lógica do callback

@@ -39,12 +39,13 @@ public class JavaSocketPM {
         System.out.println(vinicius.getFirstName());
 //        System.out.println(clone.getFirstName());
         
-        vinicius.setName("Marlon", "Marques");
+//        vinicius.setName("Marlon", "Marques");
         
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         
-     
+       
         System.out.println(vinicius.getFirstName());
+        
 //        System.out.println(clone.getFirstName());
     }
     
