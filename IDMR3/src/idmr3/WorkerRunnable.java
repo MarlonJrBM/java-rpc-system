@@ -20,12 +20,13 @@ import java.net.Socket;
 public class WorkerRunnable implements Runnable {
     protected Socket clientSocket = null;
     protected String serverText   = null;
-    protected Object remoteObject = null;
+    protected Skeleton remoteObject = null;
+    protected RemoteMessage remoteMessage = null;
 
     public WorkerRunnable(Socket clientSocket, String serverText, Object remoteObject) {
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
-        this.remoteObject = remoteObject;
+        this.remoteObject =  new Skeleton(remoteObject);
 //        this.remoteObject = ProxyFactory.getProxy(remoteObject.getClass(), remoteObject);
     }
 
@@ -38,13 +39,21 @@ public class WorkerRunnable implements Runnable {
 //                this.serverText + " - " +
 //               time +
 //            "").getBytes());
-//            ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
             
-           output.writeObject(remoteObject.getClass().getInterfaces());
+           //manda interface para o cliente 
+           output.writeObject(remoteObject.getObjectInterfaces());
+           System.out.println("Escreveu remoteObject na stream: " + remoteObject.getObjectInterfaces().toString());
 
-//            output.writeObject(remoteObject);
-            System.out.println("Escreveu remoteObject na stream: " + remoteObject.toString());
+
+           //Lê mensagem enviada pelo stub do client
+           ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+           remoteMessage = (RemoteMessage) input.readObject();
+           System.out.println("Li objeto remoto da stream: " + remoteMessage.toString());
+
+           this.remoteObject.runMethod(remoteMessage);
+           
+           
             
             output.close();
 //            input.close();

@@ -17,7 +17,7 @@ import idmr3.Server;
  *
  * @author marlon
  */
-public class Naming {
+public class Naming extends RemoteObject {
     
     private static Socket skt = null;
    
@@ -100,15 +100,16 @@ public class Naming {
 //    a String name ao Stub stub
             
             Server server = new Server(9000, name, stub);
-            new Thread(server).start();
+            
+            new Thread(server).start(); 
 
-            try {
-                    Thread.sleep(20 * 100000);
-                }  catch (InterruptedException e) {
-                    e.printStackTrace();
-                    }
-                System.out.println("Stopping Server");
-                server.stop();
+//            try {
+//                    Thread.sleep(20 * 100000);
+//                }  catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                    }
+//                System.out.println("Stopping Server");
+//                server.stop();
             
             
             //Stub remoteObject = Stub.exportObject(stub);

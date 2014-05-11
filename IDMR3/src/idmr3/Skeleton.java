@@ -15,25 +15,22 @@ import java.util.logging.Logger;
  *
  * @author Marlon
  */
-public class Skeleton {
+public class Skeleton extends RemoteObject {
     
-    private static Object remote = null;
+    private Object remoteObject = null;
     
-    public static Object runMethod(Object remoteObject, Method method, Object[] args)
+    public Skeleton(Object remoteObject) {
+        this.remoteObject = remoteObject;
+    }
+    
+    public Object getObjectInterfaces() {
+    return this.remoteObject.getClass().getInterfaces();
+}
+    
+    public  Object runMethod(RemoteMessage message) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException
     {
-        try {
-            remote =  method.invoke(remoteObject, args);
-            
-            
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(Skeleton.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalArgumentException ex) {
-            Logger.getLogger(Skeleton.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InvocationTargetException ex) {
-            Logger.getLogger(Skeleton.class.getName()).log(Level.SEVERE, null, ex);
-        }
-      
-        return remote;
+
+        return message.getMethod().invoke(remoteObject, message.getArgs());
     }
     
 }
