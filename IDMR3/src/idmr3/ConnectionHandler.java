@@ -33,7 +33,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
     
     private String name;
     
-    private RemoteMessage remoteMessage = null;
+
     
  
  
@@ -68,22 +68,22 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
 //       return method.invoke(target, args);
         
         //envia método e argumentos para o servidor executar no objeto
-        remoteMessage = new RemoteMessage(method.getName(), args);
+
 //        Person test = new Person ("marlon", "marques");
         this.sendRemoteObject(method.getName()); //envia nome do método
         System.out.println("Escrevi objeto remoto na stream: " + method.getName());
         this.sendRemoteObject(args); //envia os argumentos
-        System.out.println("Escrevi objeto remoto na stream: " + args[0].toString());
-        System.out.println("Escrevi objeto remoto na stream: " + args[1].toString());
+//        System.out.println("Escrevi objeto remoto na stream: " + args[0].toString());
+//        System.out.println("Escrevi objeto remoto na stream: " + args[1].toString());
         
         //E se um dos args for um objeto remoto do cliente? 
         //Tem que fazer lógica do callback
  
         //espera retorno do método que foi executado no server
-//       return this.getRemoteObject();
+       return this.getRemoteObject();
         
         
-        return new Object();
+//        return new Object();
     }
     
     

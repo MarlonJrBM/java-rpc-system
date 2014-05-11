@@ -6,6 +6,7 @@
 
 package testclient;
 
+import communicator.Communicator;
 import idmr3.Registry;
 import javasocketpm.*;
 
@@ -26,10 +27,9 @@ public class TestClient {
 //        System.out.println("teste = " + teste);
         Registry r = new Registry();
         r.connectToRemote("localhost", 9000);
-        Human teste2 =  (Human) r.lookup("ObjetoRemoto");
-//        System.out.println(teste2.getFirstName());
-        teste2.setName("Marlon", "Marques");
-        teste2.setName("Rita", "cássia");
+        Communicator teste2 =  (Communicator) r.lookup("ObjetoRemoto");
+        teste2.greet("Fala servidor! Firmeza cara?");
+        System.out.println("Seu nome é " + teste2.getName() + ", né?");
         
         r.disconnectFromRemote();
         

@@ -7,8 +7,9 @@
 package javasocketpm;
 
 
-import java.io.Serializable;
+import communicator.CommunicatorImpl;
 import idmr3.*;
+import java.io.Serializable;
 
 
 /**
@@ -18,34 +19,34 @@ import idmr3.*;
 
 
 
-
-
-
-
 public class JavaSocketPM {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) throws Throwable {
-        Person vinicius = new Person("Vinicius", "Grossi");
+//        Person vinicius = new Person("Vinicius", "Grossi");
 //        Human clone = (Human) ProxyFactory.getProxy(Human.class, vinicius);
         // TODO code application logic here
         String teste = "vsf";
+        CommunicatorImpl c = new CommunicatorImpl();
+        c.setName("Marlon");
 //        CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
         Registry r = new Registry();
         r.startServer(9000);
-        r.bind("ObjetoRemoto", vinicius);
+        r.bind("ObjetoRemoto", c);
         
-        System.out.println(vinicius.getFirstName());
+       
+        
+//        System.out.println(vinicius.getFirstName());
 //        System.out.println(clone.getFirstName());
         
 //        vinicius.setName("Marlon", "Marques");
         
-        Thread.sleep(10000);
+//        Thread.sleep(10000);
         
        
-        System.out.println(vinicius.getFirstName());
+//        System.out.println(vinicius.getFirstName());
         
 //        System.out.println(clone.getFirstName());
     }

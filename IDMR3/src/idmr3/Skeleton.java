@@ -29,9 +29,15 @@ public class Skeleton extends RemoteObject {
     
     public Object runMethod(String methodName, Object[] args) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException
     {
-       Class [] parameterTypes = new Class[args.length];
+       Class [] parameterTypes ;
+       if (args == null) {
+           parameterTypes = null;
+       }
+       else {
+        parameterTypes = new Class[args.length];
        for (int ii=0;ii<args.length;ii++) {
            parameterTypes[ii] = args[ii].getClass();
+       }
        }
         Method method = this.remoteObject.getClass().getMethod(methodName, parameterTypes);
                 

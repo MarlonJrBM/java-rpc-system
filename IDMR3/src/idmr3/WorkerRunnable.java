@@ -23,7 +23,7 @@ public class WorkerRunnable implements Runnable {
     protected Socket clientSocket = null;
     protected String serverText   = null;
     protected Skeleton remoteObject = null;
-    protected RemoteMessage remoteMessage = null;
+   
     protected boolean interfaceIsSent;
     protected HashMap remoteObjects;
     ObjectOutputStream output;
@@ -68,23 +68,23 @@ public class WorkerRunnable implements Runnable {
             
             while (!this.clientSocket.isClosed()) {
 
-           //Lê mensagem enviada pelo stub do client
            
-//           remoteMessage = (RemoteMessage) input.readObject();
            String methodName = (String) input.readObject();
            if (methodName.contentEquals("Bye Bye Server!")) {
                this.clientSocket.close();
-               
            }
            else {
            System.out.println("Li objeto remoto da stream: " + methodName);
-//           Method method = (Method) input.readObject();
+
            Object[] args =(Object[]) input.readObject();
-           System.out.println("Li objeto remoto da stream: " + args[0].toString());
+//           System.out.println("Li objeto remoto da stream: " + args[0].toString());
 //             Person pessoa =  (Person) input.readObject();
 //             System.out.println(input.readObject().toString());
 //             System.out.println(pessoa.getFirstName());
-           this.remoteObject.runMethod(methodName, args);
+           
+           //envia retorno para o cliente
+//           Object returnObject =  this.remoteObject.runMethod(methodName, args);
+           output.writeObject(this.remoteObject.runMethod(methodName, args));
            }
             }
             
