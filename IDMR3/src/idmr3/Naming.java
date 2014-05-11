@@ -99,7 +99,7 @@ public class Naming extends RemoteObject {
             //TODO- Lógica de socket para o servidor ficar "disponível", associando
 //    a String name ao Stub stub
             
-            Server server = new Server(9000, name, stub);
+            Server server = new Server(9000);
             
             new Thread(server).start(); 
 

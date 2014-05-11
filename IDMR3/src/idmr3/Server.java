@@ -10,6 +10,9 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import idmr3.WorkerRunnable;
+import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,13 +26,19 @@ public class Server implements Runnable {
     protected Thread       runningThread= null;
     protected String       name = null;
     protected Object       remoteObject = null;
+    protected HashMap<String,Object>  remoteObjects;
 
-    public Server(int port, String name, Object remoteObject){
+    public Server(int port){
         this.serverPort = port;
         this.name = name;
         this.remoteObject = remoteObject;
+        this.remoteObjects = new HashMap();
     }
 
+    public void bindObject(String name, Object object) {
+        this.remoteObjects.put(name, object);
+    }
+    
     public void run(){
         synchronized(this){
             this.runningThread = Thread.currentThread();
@@ -47,10 +56,14 @@ public class Server implements Runnable {
                 throw new RuntimeException(
                     "Error accepting client connection", e);
             }
-            new Thread(
-                new WorkerRunnable(
-                    clientSocket, "Multithreaded Server", this.remoteObject)
-            ).start();
+            try {
+                new Thread(
+                        new WorkerRunnable(
+                                clientSocket, this.remoteObjects)
+                ).start();
+            } catch (IOException ex) {
+                Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         System.out.println("Server Stopped.");
     }

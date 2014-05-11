@@ -33,8 +33,9 @@ public class JavaSocketPM {
         // TODO code application logic here
         String teste = "vsf";
 //        CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
-        
-        Naming.bind("ObjetoRemoto", vinicius);
+        Registry r = new Registry();
+        r.startServer(9000);
+        r.bind("ObjetoRemoto", vinicius);
         
         System.out.println(vinicius.getFirstName());
 //        System.out.println(clone.getFirstName());

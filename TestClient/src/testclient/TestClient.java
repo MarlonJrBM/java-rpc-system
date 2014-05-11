@@ -24,8 +24,9 @@ public class TestClient {
         //CharSequence teste;
 //        teste = (CharSequence) Naming.lookup("localhost");
 //        System.out.println("teste = " + teste);
-        Registry r = new Registry("localhost", 9000);
-        Human teste2 =  (Human) r.lookup("localhost");
+        Registry r = new Registry();
+        r.connectToRemote("localhost", 9000);
+        Human teste2 =  (Human) r.lookup("ObjetoRemoto");
 //        System.out.println(teste2.getFirstName());
         teste2.setName("Marlon", "Marques");
         teste2.setName("Rita", "cássia");

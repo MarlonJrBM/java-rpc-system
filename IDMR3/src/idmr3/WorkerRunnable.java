@@ -13,6 +13,7 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.util.HashMap;
 
 /**
  *
@@ -24,12 +25,19 @@ public class WorkerRunnable implements Runnable {
     protected Skeleton remoteObject = null;
     protected RemoteMessage remoteMessage = null;
     protected boolean interfaceIsSent;
+    protected HashMap remoteObjects;
+    ObjectOutputStream output;
+    ObjectInputStream input;
+    
 
-    public WorkerRunnable(Socket clientSocket, String serverText, Object remoteObject) {
+    public WorkerRunnable(Socket clientSocket,
+            HashMap<String,Object> remoteObjects) throws IOException {
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
-        this.remoteObject =  new Skeleton(remoteObject);
         this.interfaceIsSent = false;
+        this.remoteObjects = remoteObjects;
+        this.output = new ObjectOutputStream(clientSocket.getOutputStream());
+        this.input = new ObjectInputStream(clientSocket.getInputStream());
 //        this.remoteObject = ProxyFactory.getProxy(remoteObject.getClass(), remoteObject);
     }
     
@@ -44,9 +52,13 @@ public class WorkerRunnable implements Runnable {
 //                this.serverText + " - " +
 //               time +
 //            "").getBytes());
-            ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
-            ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
             
+            //recebe nome do objeto
+            String objectName = (String) input.readObject();
+            System.out.println("Nome do objeto bindado: " + objectName);
+            remoteObject = new Skeleton(remoteObjects.get(objectName));
+            
+
            //manda interface para o cliente 
             if (!interfaceIsSent) {
            output.writeObject(remoteObject.getObjectInterfaces());

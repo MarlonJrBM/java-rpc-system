@@ -13,6 +13,7 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
 import java.net.Socket;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +30,7 @@ public class Registry extends RemoteObject {
     private int port;
     private String addr;
     private ConnectionHandler connectionHandler;
+    private Server server;
     
     public Registry() {
         this.skt = null;
@@ -38,11 +40,9 @@ public class Registry extends RemoteObject {
         this.ois = null;   
     }
     
-    public Registry (String addr, int port) {
-        this.connectToRemote(addr, port);
-    }
     
-    public final void connectToRemote(String addr, int port) {
+    
+    public void connectToRemote(String addr, int port) {
         this.addr = addr;
         this.port = port;
         try {
@@ -53,6 +53,14 @@ public class Registry extends RemoteObject {
         } catch (IOException ex) {
             Logger.getLogger(Registry.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    public void startServer(int port) {
+        server = new Server(port);
+        new Thread(server).start(); 
+    }
+    
+    public void stopServer() {
+        server.stop();
     }
     
     public void disconnectFromRemote()
@@ -75,7 +83,7 @@ public class Registry extends RemoteObject {
         Object obj = null;
         Class[] interfaces = null;
         this.connectionHandler = new ConnectionHandler(name, this.skt, this.oos, this.ois);
-        interfaces = getInterfaces() ; //Lê as interfaces
+        interfaces = getInterfaces(name) ; //Lê as interfaces
         System.out.println(interfaces.toString());
         obj =  Proxy.newProxyInstance(interfaces[0].getClassLoader(),
                 interfaces,
@@ -85,12 +93,13 @@ public class Registry extends RemoteObject {
         
     }
     
-    private  Class[] getInterfaces()
+    private  Class[] getInterfaces(String name)
     {
         Class[] interfaces = null;
         try {
 //            ObjectInputStream inFromServer = new ObjectInputStream(skt.getInputStream());
             
+            oos.writeObject(name);
             interfaces = (Class[]) ois.readObject();
             
             
@@ -103,7 +112,9 @@ public class Registry extends RemoteObject {
     
     public void bind (String name, Object object) {
         
+        this.server.bindObject(name, object);
         
+       
         
     }
     
