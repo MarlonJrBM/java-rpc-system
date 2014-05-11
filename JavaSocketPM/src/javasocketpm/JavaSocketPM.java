@@ -7,6 +7,7 @@
 package javasocketpm;
 
 
+import communicator.Callback;
 import communicator.CommunicatorImpl;
 import idmr3.*;
 import java.io.Serializable;
@@ -35,6 +36,7 @@ public class JavaSocketPM {
         Registry r = new Registry();
         r.startServer(9000);
         r.bind("ObjetoRemoto", c);
+        
         
        
         

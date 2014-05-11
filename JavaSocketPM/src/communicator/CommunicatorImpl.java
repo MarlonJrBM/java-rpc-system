@@ -15,13 +15,25 @@ import idmr3.RemoteObject;
 public class CommunicatorImpl extends RemoteObject implements Communicator {
     
     String name;
+    Callback callbak;
     
     public CommunicatorImpl() {
         
     }
     
-    public CommunicatorImpl(String name) {
+    public CommunicatorImpl(String name, Callback callbak) {
         this.setName(name);
+        this.callbak = callbak;
+    }
+    
+    public void callbak(Callback c, String text)
+    {
+        c.callMeBack(text);
+    }
+    
+    public Callback getCallback()
+    {
+        return this.callbak;
     }
     
     
@@ -30,7 +42,8 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
         this.name = name;
     }
     
-     public void subscribe() {
+     public void subscribe(Callback callbak) {
+         this.callbak = callbak;
          
      }
     
@@ -40,6 +53,7 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
     
     public void greet(String greeting) {
         System.out.println(greeting);
+//        this.callbak.callMeBack("Fala vei!");
     }
     
 }

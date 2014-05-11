@@ -6,6 +6,9 @@
 
 package testclient;
 
+
+import communicator.Callback;
+import communicator.CallbackImpl;
 import communicator.Communicator;
 import idmr3.Registry;
 import javasocketpm.*;
@@ -28,6 +31,8 @@ public class TestClient {
         Registry r = new Registry();
         r.connectToRemote("localhost", 9000);
         Communicator teste2 =  (Communicator) r.lookup("ObjetoRemoto");
+        Callback callbak = new CallbackImpl();
+        teste2.subscribe(callbak);
         teste2.greet("Fala servidor! Firmeza cara?");
         System.out.println("Seu nome é " + teste2.getName() + ", né?");
         

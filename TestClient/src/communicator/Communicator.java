@@ -13,9 +13,13 @@ import idmr3.*;
  */
 public interface Communicator extends Remote {
     
-    public void subscribe();
+    public void subscribe(Callback callbak);
     
     public String getName();
     
+    public Callback getCallback();
+    
     public void greet(String greeting);
+    
+    public void callbak(Callback c, String text);
 }
