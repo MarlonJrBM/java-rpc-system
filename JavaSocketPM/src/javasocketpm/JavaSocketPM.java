@@ -6,10 +6,10 @@
 
 package javasocketpm;
 
+
 import java.io.Serializable;
-//import naming.*;
-import naming.*;
-import stubs.*;
+import idmr3.*;
+
 
 /**
  *
@@ -29,23 +29,23 @@ public class JavaSocketPM {
      */
     public static void main(String[] args) throws Throwable {
         Person vinicius = new Person("Vinicius", "Grossi");
-        Human clone = (Human) ProxyFactory.getProxy(Human.class, vinicius);
+//        Human clone = (Human) ProxyFactory.getProxy(Human.class, vinicius);
         // TODO code application logic here
         String teste = "vsf";
-        CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
+//        CharSequence clone_teste = ProxyFactory.getProxy(CharSequence.class, teste);
         
         Naming.bind("ObjetoRemoto", vinicius);
         
         System.out.println(vinicius.getFirstName());
-        System.out.println(clone.getFirstName());
+//        System.out.println(clone.getFirstName());
         
-        //vinicius.setName("Marlon", "Marques");
+        vinicius.setName("Marlon", "Marques");
         
         Thread.sleep(1000);
         
      
         System.out.println(vinicius.getFirstName());
-        System.out.println(clone.getFirstName());
+//        System.out.println(clone.getFirstName());
     }
     
     

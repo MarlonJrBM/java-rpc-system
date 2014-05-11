@@ -4,11 +4,12 @@
  * and open the template in the editor.
  */
 
-package naming;
+package idmr3;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import idmr3.WorkerRunnable;
 
 /**
  *
@@ -51,7 +52,7 @@ public class Server implements Runnable {
                     clientSocket, "Multithreaded Server", this.remoteObject)
             ).start();
         }
-        System.out.println("Server Stopped.") ;
+        System.out.println("Server Stopped.");
     }
 
 

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package stubs;
+package idmr3;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;
@@ -38,12 +38,12 @@ public class Stub {
     }
    
     
-    public Stub(Class remoteClass)
-    {
-        //TODO - de alguma maneira esse cara aqui vai fazer a conexão do cliente com o servidor...
-        proxy = (Object) Proxy.newProxyInstance(remoteClass.getClassLoader(), remoteClass.getInterfaces(), 
-                new ConnectionHandler(proxy));
-    }
+//    public Stub(Class remoteClass)
+//    {
+//        //TODO - de alguma maneira esse cara aqui vai fazer a conexão do cliente com o servidor...
+//        proxy = (Object) Proxy.newProxyInstance(remoteClass.getClassLoader(), remoteClass.getInterfaces(), 
+//                new ConnectionHandler(proxy));
+//    }
 
     
 }

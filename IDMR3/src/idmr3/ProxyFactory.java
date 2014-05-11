@@ -4,12 +4,13 @@
  * and open the template in the editor.
  */
 
-package stubs;
+package idmr3;
 
 import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
+import java.net.Socket;
 /**
  *
  * @author Marlon
@@ -18,12 +19,12 @@ public class ProxyFactory {
     
   
     
-    public static<T> T getProxy(Class<T> intf, 
-      final T obj) {
-        return (T) 
-          Proxy.newProxyInstance(obj.getClass().getClassLoader(),
-                new Class[] { intf },
-                new ConnectionHandler(obj));
+    public static Object getProxy(Class[] intf, String name, 
+      Socket skt) {
+        return (Object)
+          Proxy.newProxyInstance(intf[0].getClassLoader(),
+                intf,
+                new ConnectionHandler(name,skt));
     }
     
     

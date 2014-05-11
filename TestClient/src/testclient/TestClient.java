@@ -6,7 +6,7 @@
 
 package testclient;
 
-import naming.*;
+import idmr3.Naming;
 import javasocketpm.*;
 
 /**
@@ -24,10 +24,13 @@ public class TestClient {
         //CharSequence teste;
 //        teste = (CharSequence) Naming.lookup("localhost");
 //        System.out.println("teste = " + teste);
-        Human teste2 = (Human) Naming.lookup("localhost");
-        System.out.println(teste2.getFirstName());
-        teste2.setName("Marlon", "Marques");
-        System.out.println(teste2.getFirstName());
+        Human teste2 =  (Human) Naming.lookup("localhost");
+//        System.out.println(teste2.getFirstName());
+//        teste2.setName("Marlon", "Marques");
+        
+        
+//        Naming.disconnect();
+        
         
     }
     

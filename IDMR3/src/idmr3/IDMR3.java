@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 
-package javasocketpm;
+package idmr3;
 
-import idmr3.*;
 /**
  *
  * @author Marlon
  */
-public interface Human extends Remote
-{
-    public String getFirstName() ;
-    
-    public String getLastName() ;
-    
-    public void setName(String first, String last) ; 
-}
+public class IDMR3 {
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        // TODO code application logic here
+    }
+    
+}

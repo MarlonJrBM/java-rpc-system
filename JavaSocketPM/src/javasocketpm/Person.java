@@ -6,13 +6,13 @@
 
 package javasocketpm;
 
-import java.io.Serializable;
+import idmr3.RemoteObject;
 
 /**
  *
  * @author Marlon
  */
-public class Person implements Human, Serializable {
+public class Person extends RemoteObject implements Human {
     
     String firstName, lastName;
     int age;

@@ -6,11 +6,13 @@
 
 package javasocketpm;
 
+import idmr3.*;
+
 /**
  *
  * @author Marlon
  */
-public interface Human {
+public interface Human extends Remote {
     
     public String getFirstName() ;
     

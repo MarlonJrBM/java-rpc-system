@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package naming;
+package idmr3;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -26,6 +26,7 @@ public class WorkerRunnable implements Runnable {
         this.clientSocket = clientSocket;
         this.serverText   = serverText;
         this.remoteObject = remoteObject;
+//        this.remoteObject = ProxyFactory.getProxy(remoteObject.getClass(), remoteObject);
     }
 
     public void run() {
@@ -37,17 +38,22 @@ public class WorkerRunnable implements Runnable {
 //                this.serverText + " - " +
 //               time +
 //            "").getBytes());
-            ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
+//            ObjectInputStream input = new ObjectInputStream(clientSocket.getInputStream());
             ObjectOutputStream output = new ObjectOutputStream(clientSocket.getOutputStream());
-            output.writeObject(remoteObject);
+            
+           output.writeObject(remoteObject.getClass().getInterfaces());
+
+//            output.writeObject(remoteObject);
             System.out.println("Escreveu remoteObject na stream: " + remoteObject.toString());
+            
             output.close();
-            input.close();
+//            input.close();
 //            System.out.println("Request processed: " + time);
-        } catch (IOException e) {
+        } catch (Exception e) {
             //report exception somewhere.
             e.printStackTrace();
         }
     }
     
 }
+

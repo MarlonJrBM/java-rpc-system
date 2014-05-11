@@ -4,19 +4,14 @@
  * and open the template in the editor.
  */
 
-package javasocketpm;
+package idmr3;
 
-import idmr3.*;
 /**
  *
  * @author Marlon
  */
-public interface Human extends Remote
-{
-    public String getFirstName() ;
+public class RemoteObject implements Remote {
     
-    public String getLastName() ;
     
-    public void setName(String first, String last) ; 
+    
 }
-
