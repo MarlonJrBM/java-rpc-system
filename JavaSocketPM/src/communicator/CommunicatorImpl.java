@@ -26,9 +26,9 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
         this.callbak = callbak;
     }
     
-    public void callbak(Callback c, String text)
+    public void callbak(String text)
     {
-        c.callMeBack(text);
+        callbak.callMeBack(text);
     }
     
     public Callback getCallback()

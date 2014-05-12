@@ -21,5 +21,5 @@ public interface Communicator extends Remote {
     
     public void greet(String greeting);
     
-    public void callbak(Callback c, String text);
+    public void callbak(String text);
 }

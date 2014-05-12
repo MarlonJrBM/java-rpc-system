@@ -31,7 +31,7 @@ public class Server implements Runnable {
     public Server(int port){
         this.serverPort = port;
         this.name = name;
-        this.remoteObject = remoteObject;
+//        this.remoteObject = remoteObject;
         this.remoteObjects = new HashMap();
     }
 

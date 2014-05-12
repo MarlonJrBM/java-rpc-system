@@ -23,7 +23,7 @@ public class TestClient {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+    // TODO code application logic here
         
         //CharSequence teste;
 //        teste = (CharSequence) Naming.lookup("localhost");
@@ -33,8 +33,9 @@ public class TestClient {
         Communicator teste2 =  (Communicator) r.lookup("ObjetoRemoto");
         Callback callbak = new CallbackImpl();
         teste2.subscribe(callbak);
-        teste2.greet("Fala servidor! Firmeza cara?");
-        System.out.println("Seu nome é " + teste2.getName() + ", né?");
+        teste2.callbak("VAI TOMAR NO CUUUU");
+//        teste2.greet("Fala servidor! Firmeza cara?");
+//        System.out.println("Seu nome é " + teste2.getName() + ", né?");
         
         r.disconnectFromRemote();
         

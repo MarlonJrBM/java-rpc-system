@@ -26,6 +26,7 @@ public class WorkerRunnable implements Runnable {
    
     protected boolean interfaceIsSent;
     protected HashMap remoteObjects;
+    protected CallbackHandler callbackHandler;
     ObjectOutputStream output;
     ObjectInputStream input;
     
@@ -38,6 +39,7 @@ public class WorkerRunnable implements Runnable {
         this.remoteObjects = remoteObjects;
         this.output = new ObjectOutputStream(clientSocket.getOutputStream());
         this.input = new ObjectInputStream(clientSocket.getInputStream());
+        this.callbackHandler = new CallbackHandler(null,clientSocket, output, input);
 //        this.remoteObject = ProxyFactory.getProxy(remoteObject.getClass(), remoteObject);
     }
     
@@ -56,27 +58,47 @@ public class WorkerRunnable implements Runnable {
             //recebe nome do objeto
             String objectName = (String) input.readObject();
             System.out.println("Nome do objeto bindado: " + objectName);
-            remoteObject = new Skeleton(remoteObjects.get(objectName));
+            remoteObject = new Skeleton(remoteObjects.get(objectName), clientSocket, output);
             
 
            //manda interface para o cliente 
             if (!interfaceIsSent) {
+                //Isso pode dar pau!!!
            output.writeObject(remoteObject.getObjectInterfaces());
            interfaceIsSent = true;
-           System.out.println("Escreveu remoteObject na stream: " + remoteObject.getObjectInterfaces().toString());
+           System.out.println("Escreveu interface na stream: " + remoteObject.getObjectInterfaces().toString());
             }
             
             while (!this.clientSocket.isClosed()) {
 
            
-           String methodName = (String) input.readObject();
+           String methodName = input.readObject().toString();
            if (methodName.contentEquals("Bye Bye Server!")) {
                this.clientSocket.close();
            }
            else {
-           System.out.println("Li objeto remoto da stream: " + methodName);
+           System.out.println("Li nome do método da stream: " + methodName);
 
            Object[] args =(Object[]) input.readObject();
+           Object[] newArgs = null;
+
+                   
+//           Parte do callback
+           if (args!=null) {
+               newArgs = new Object[args.length];
+               for (int ii=0;ii<args.length;ii++) {
+                   if (args[ii].toString().startsWith("interface ")) {
+                       newArgs[ii] = StubFactory.getStub(new Class[] { (Class)input.readObject()},
+                               callbackHandler);
+                       System.out.println("Deu certo!");
+                   }
+                   else {
+                        newArgs[ii]=args[ii];
+                        System.out.println("Deu ruim");
+                   }
+               }
+           }
+           
 //           System.out.println("Li objeto remoto da stream: " + args[0].toString());
 //             Person pessoa =  (Person) input.readObject();
 //             System.out.println(input.readObject().toString());
@@ -84,7 +106,7 @@ public class WorkerRunnable implements Runnable {
            
            //envia retorno para o cliente
 //           Object returnObject =  this.remoteObject.runMethod(methodName, args);
-           output.writeObject(this.remoteObject.runMethod(methodName, args));
+           output.writeObject(this.remoteObject.runMethod(methodName,args, newArgs));
            }
             }
             

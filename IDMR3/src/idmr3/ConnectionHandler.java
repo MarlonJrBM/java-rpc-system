@@ -63,7 +63,11 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable 
     {
         //TODO - tudo
-        
+        Object[] newArgs = null;
+        Object returnObject = null;
+        Boolean isCallback;
+        String methodName;
+        Object [] argsAgain;
         System.out.println("Fui invocado: " + method.getName() );
 //       return method.invoke(target, args);
         
@@ -74,12 +78,59 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
         System.out.println("Escrevi objeto remoto na stream: " + method.getName());
         //E se um dos args for um objeto remoto do cliente? 
         //Tem que fazer lógica do callback
-        for (Object o: args) {
-            if (o instanceof RemoteObject) {
-                
+        
+        
+        if (args!=null) {
+            newArgs = new Object[args.length];
+            for (int ii=0; ii<args.length;ii++) {
+                if (args[ii] instanceof RemoteObject) {
+                    newArgs[ii] = args[ii].getClass().getInterfaces()[0];
+                    System.out.println(args[ii].getClass().getInterfaces()[0].getName());
+                }
+                else {
+                    newArgs[ii] = args[ii];
+                    System.out.println("Não entrei nesse if maldito");
+                }
             }
-        }        
-        this.sendRemoteObject(args); //envia os argumentos
+            }
+            this.sendRemoteObject(newArgs);
+            if (newArgs!=null)
+            for (Object arg: newArgs) {
+                if (arg.toString().startsWith("interface ")) {
+                    System.out.println("Mandou interface");
+                    oos.writeObject(arg); //envia interface por interface
+                }
+                else {
+                    System.out.println("Não to mandando nada");
+                }
+            }
+            
+        
+        
+        returnObject = this.getRemoteObject();
+        //Começa a testar pra ver se deve esperar por callback
+        
+        if (returnObject.toString().contentEquals("Begin of callback")) {
+            isCallback = true;
+            while (isCallback) {
+                methodName = ois.readObject().toString();
+                System.out.println("Método de callback: "  + methodName);
+                if (methodName.contentEquals("End of callback")) {
+                    isCallback = false;
+                }
+                else {
+                    argsAgain = (Object[]) ois.readObject();
+                    
+                    
+                }
+            }
+            
+        }
+       
+        
+        
+        
+         //envia os argumentos
 //        System.out.println("Escrevi objeto remoto na stream: " + args[0].toString());
 //        System.out.println("Escrevi objeto remoto na stream: " + args[1].toString());
         

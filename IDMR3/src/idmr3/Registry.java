@@ -80,16 +80,14 @@ public class Registry extends RemoteObject {
     
     
     public Object lookup(String name) {
-        Object obj = null;
+        Object stub = null;
         Class[] interfaces = null;
         this.connectionHandler = new ConnectionHandler(name, this.skt, this.oos, this.ois);
         interfaces = getInterfaces(name) ; //Lê as interfaces
         System.out.println(interfaces.toString());
-        obj =  Proxy.newProxyInstance(interfaces[0].getClassLoader(),
-                interfaces,
-                connectionHandler); //Cria o proxy
+        stub =  StubFactory.getStub(interfaces, connectionHandler); //Cria o proxy
         
-        return obj;
+        return stub;
         
     }
     
