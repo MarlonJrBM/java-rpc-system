@@ -44,7 +44,8 @@ public class CallbackHandler extends RemoteObject implements InvocationHandler {
         System.out.println("KD VC CARALHO?!?!");
 //        System.out.println("Nome do objeto: " + o.toString());
         oos.writeObject(method.getName()); //envia nome do método
-        oos.writeObject(args);
+        oos.writeObject(args); //envia parâmetros
+        oos.writeObject(name); //envia nome do objeto a ser executado o método
         
         System.out.println("Método de callback: "  + method.getName());
         System.out.println("Argumentos de callback: "  + args[0].toString());

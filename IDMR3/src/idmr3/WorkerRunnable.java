@@ -29,6 +29,7 @@ public class WorkerRunnable implements Runnable {
     protected CallbackHandler callbackHandler;
     ObjectOutputStream output;
     ObjectInputStream input;
+    protected CallbackHandler[] callbackHandlers;
     
 
     public WorkerRunnable(Socket clientSocket,
@@ -40,6 +41,7 @@ public class WorkerRunnable implements Runnable {
         this.output = new ObjectOutputStream(clientSocket.getOutputStream());
         this.input = new ObjectInputStream(clientSocket.getInputStream());
         this.callbackHandler = new CallbackHandler(null,clientSocket, output, input);
+        
 //        this.remoteObject = ProxyFactory.getProxy(remoteObject.getClass(), remoteObject);
     }
     
@@ -57,6 +59,7 @@ public class WorkerRunnable implements Runnable {
             
             //recebe nome do objeto
             String objectName = (String) input.readObject();
+            String callbackObjectName = null;
             System.out.println("Nome do objeto bindado: " + objectName);
             remoteObject = new Skeleton(remoteObjects.get(objectName), clientSocket, output);
             
@@ -85,11 +88,14 @@ public class WorkerRunnable implements Runnable {
                    
 //           Parte do callback
            if (args!=null) {
+               callbackHandlers = new CallbackHandler[args.length];
                newArgs = new Object[args.length];
                for (int ii=0;ii<args.length;ii++) {
                    if (args[ii].toString().startsWith("interface ")) {
+                       callbackObjectName = input.readObject().toString();
+                       callbackHandlers[ii] = new CallbackHandler(callbackObjectName, clientSocket, output, input ); 
                        newArgs[ii] = StubFactory.getStub(new Class[] { (Class)input.readObject()},
-                               callbackHandler);
+                               callbackHandlers[ii]);
                        System.out.println("Deu certo!");
                    }
                    else {

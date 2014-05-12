@@ -45,9 +45,10 @@ public class TestClient {
         r.connectToRemote("localhost", 9000);
         Communicator chat =  (Communicator) r.lookup("ObjetoRemoto");
         chat.subscribe(name);
-        System.out.println("Welcome to the jungle, " + name + "!");
+        
        
         Callback callbak = new CallbackImpl();
+        chat.callbak(callbak, "Welcome to the jungle, " + name + "!");
         
         String message = null;
         do {

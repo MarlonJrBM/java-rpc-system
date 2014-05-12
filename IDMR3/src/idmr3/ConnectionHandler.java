@@ -16,6 +16,7 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.Arrays;
+import java.util.HashMap;
 
 /**
  *
@@ -33,6 +34,8 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
     
     private String name;
     
+    private HashMap<String, Object> callbackObjects;
+    
 
     
  
@@ -43,6 +46,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
     this.name = name;
     this.oos = oos;
     this.ois = ois;
+    this.callbackObjects = new HashMap();
     }
     
     private Object getRemoteObject() throws IOException, ClassNotFoundException
@@ -85,6 +89,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
             for (int ii=0; ii<args.length;ii++) {
                 if (args[ii] instanceof RemoteObject) {
                     newArgs[ii] = args[ii].getClass().getInterfaces()[0];
+                    callbackObjects.put(args[ii].toString(), args[ii]);
                     System.out.println(args[ii].getClass().getInterfaces()[0].getName());
                 }
                 else {
@@ -95,10 +100,12 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
             }
             this.sendRemoteObject(newArgs);
             if (newArgs!=null)
-            for (Object arg: newArgs) {
-                if (arg.toString().startsWith("interface ")) {
+            for (int ii=0;ii<newArgs.length;ii++) {
+                if (newArgs[ii].toString().startsWith("interface ")) {
                     System.out.println("Mandou interface");
-                    oos.writeObject(arg); //envia interface por interface
+                    oos.writeObject(args[ii].toString()); //envia nome que representa o objeto
+                    oos.writeObject(newArgs[ii]); //envia interface por interface
+                    
                 }
                 else {
                     System.out.println("Não to mandando nada");
@@ -122,8 +129,8 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
                     isCallback = false;
                 }
                 else {
-                    remoteCallbackObject = args[0]; //mudar
                     argsAgain = (Object[]) ois.readObject();
+                    remoteCallbackObject = callbackObjects.get(ois.readObject().toString()); //mudar
                     if (argsAgain == null) {
                        parameterTypes = null;
                      }
@@ -134,7 +141,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
                         }
                     }
                     Method callbackMethod = remoteCallbackObject.getClass().getMethod(methodName, parameterTypes);
-                    oos.writeObject(callbackMethod.invoke(remoteCallbackObject, argsAgain));
+                    oos.writeObject(callbackMethod.invoke(remoteCallbackObject, argsAgain)); //envia retorno do callback pro servidor
                 }
             }   
         }
