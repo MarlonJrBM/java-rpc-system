@@ -109,6 +109,9 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
         
         returnObject = this.getRemoteObject();
         //Começa a testar pra ver se deve esperar por callback
+        Object remoteCallbackObject;
+        Class [] parameterTypes;
+       
         
         if (returnObject.toString().contentEquals("Begin of callback")) {
             isCallback = true;
@@ -119,12 +122,21 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
                     isCallback = false;
                 }
                 else {
+                    remoteCallbackObject = args[0]; //mudar
                     argsAgain = (Object[]) ois.readObject();
-                    
-                    
+                    if (argsAgain == null) {
+                       parameterTypes = null;
+                     }
+                    else {
+                        parameterTypes = new Class[argsAgain.length];
+                        for (int ii=0;ii<parameterTypes.length;ii++) {
+                            parameterTypes[ii] = argsAgain[ii].getClass();
+                        }
+                    }
+                    Method callbackMethod = remoteCallbackObject.getClass().getMethod(methodName, parameterTypes);
+                    oos.writeObject(callbackMethod.invoke(remoteCallbackObject, argsAgain));
                 }
-            }
-            
+            }   
         }
        
         

@@ -26,7 +26,7 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
         this.callbak = callbak;
     }
     
-    public void callbak(String text)
+    public void callbak(Callback callbak, String text)
     {
         callbak.callMeBack(text);
     }
@@ -42,8 +42,9 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
         this.name = name;
     }
     
-     public void subscribe(Callback callbak) {
-         this.callbak = callbak;
+     public void subscribe(String name) {
+         this.name = name;
+         System.out.println(name + " entrou no servidor.");
          
      }
     
@@ -51,8 +52,8 @@ public class CommunicatorImpl extends RemoteObject implements Communicator {
         return this.name;
     }
     
-    public void greet(String greeting) {
-        System.out.println(greeting);
+    public void sendMsg(String message) {
+        System.out.println(message);
 //        this.callbak.callMeBack("Fala vei!");
     }
     

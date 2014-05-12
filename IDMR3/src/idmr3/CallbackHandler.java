@@ -39,7 +39,8 @@ public class CallbackHandler extends RemoteObject implements InvocationHandler {
 
     @Override
     public Object invoke(Object o, Method method, Object[] args) throws Throwable {
-        
+       
+        Object returnValue = null;
         System.out.println("KD VC CARALHO?!?!");
 //        System.out.println("Nome do objeto: " + o.toString());
         oos.writeObject(method.getName()); //envia nome do método
@@ -50,7 +51,11 @@ public class CallbackHandler extends RemoteObject implements InvocationHandler {
         
 //        System.out.println("Objeto invocador: " + o.toString());
         
-        return new Object();
+        //escuta pelo valor de retorno
+        
+        returnValue = ois.readObject();
+        
+        return returnValue;
        
         
         

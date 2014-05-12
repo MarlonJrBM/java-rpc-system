@@ -11,6 +11,11 @@ import communicator.Callback;
 import communicator.CallbackImpl;
 import communicator.Communicator;
 import idmr3.Registry;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javasocketpm.*;
 
 /**
@@ -29,11 +34,33 @@ public class TestClient {
 //        teste = (CharSequence) Naming.lookup("localhost");
 //        System.out.println("teste = " + teste);
         Registry r = new Registry();
+        BufferedReader rd = new BufferedReader(new InputStreamReader(System.in));
+        String name = null;
+        System.out.println("Please enter your name: ");
+        try {
+            name = rd.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
+        }
         r.connectToRemote("localhost", 9000);
-        Communicator teste2 =  (Communicator) r.lookup("ObjetoRemoto");
+        Communicator chat =  (Communicator) r.lookup("ObjetoRemoto");
+        chat.subscribe(name);
+        System.out.println("Welcome to the jungle, " + name + "!");
+       
         Callback callbak = new CallbackImpl();
-        teste2.subscribe(callbak);
-        teste2.callbak("VAI TOMAR NO CUUUU");
+        
+        String message = null;
+        do {
+            try {
+                message = rd.readLine();
+                chat.sendMsg(message);
+               
+            } catch (IOException ex) {
+                Logger.getLogger(TestClient.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } while (!message.contentEquals("/quit"));
+//        chat.callbak("VAI TOMAR NO CUUUU");
 //        teste2.greet("Fala servidor! Firmeza cara?");
 //        System.out.println("Seu nome é " + teste2.getName() + ", né?");
         
