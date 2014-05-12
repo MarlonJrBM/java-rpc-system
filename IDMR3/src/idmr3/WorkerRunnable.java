@@ -49,18 +49,11 @@ public class WorkerRunnable implements Runnable {
 
     public void run() {
         try {
-//            InputStream input  = clientSocket.getInputStream();
-//            OutputStream output = clientSocket.getOutputStream();
-//            long time = System.currentTimeMillis();
-//            output.write(("HTTP/1.1 200 OK\n\nWorkerRunnable: " +
-//                this.serverText + " - " +
-//               time +
-//            "").getBytes());
-            
+
             //recebe nome do objeto
             String objectName = (String) input.readObject();
             String callbackObjectName = null;
-            System.out.println("Nome do objeto bindado: " + objectName);
+
             remoteObject = new Skeleton(remoteObjects.get(objectName), clientSocket, output);
             
 
@@ -69,7 +62,7 @@ public class WorkerRunnable implements Runnable {
                 //Isso pode dar pau!!!
            output.writeObject(remoteObject.getObjectInterfaces());
            interfaceIsSent = true;
-           System.out.println("Escreveu interface na stream: " + remoteObject.getObjectInterfaces().toString());
+           
             }
             
             while (!this.clientSocket.isClosed()) {
@@ -80,7 +73,7 @@ public class WorkerRunnable implements Runnable {
                this.clientSocket.close();
            }
            else {
-           System.out.println("Li nome do método da stream: " + methodName);
+        
 
            Object[] args =(Object[]) input.readObject();
            Object[] newArgs = null;
@@ -96,19 +89,16 @@ public class WorkerRunnable implements Runnable {
                        callbackHandlers[ii] = new CallbackHandler(callbackObjectName, clientSocket, output, input ); 
                        newArgs[ii] = StubFactory.getStub(new Class[] { (Class)input.readObject()},
                                callbackHandlers[ii]);
-                       System.out.println("Deu certo!");
+                 
                    }
                    else {
                         newArgs[ii]=args[ii];
-                        System.out.println("Deu ruim");
+                       
                    }
                }
            }
            
-//           System.out.println("Li objeto remoto da stream: " + args[0].toString());
-//             Person pessoa =  (Person) input.readObject();
-//             System.out.println(input.readObject().toString());
-//             System.out.println(pessoa.getFirstName());
+
            
            //envia retorno para o cliente
 //           Object returnObject =  this.remoteObject.runMethod(methodName, args);
@@ -118,7 +108,7 @@ public class WorkerRunnable implements Runnable {
             
             output.close();
             input.close();
-//            System.out.println("Request processed: " + time);
+
         } catch (Exception e) {
             //report exception somewhere.
             e.printStackTrace();

@@ -6,7 +6,7 @@
 
 package chatinterface;
 
-import java.rmi.*;
+import idmr3.*;
 
 /**
  *
@@ -14,8 +14,7 @@ import java.rmi.*;
  */
 public interface ClientInterface extends Remote {
     
-    public void displayMsg(String sender, String msg) throws RemoteException;
+    public void displayMsg(String sender, String msg);
     
-    public String getClientName() throws RemoteException;
-    
+    public String getClientName(); 
 }

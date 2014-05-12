@@ -46,25 +46,25 @@ public class Skeleton extends RemoteObject {
        }
        else {
         parameterTypes = new Class[args.length];
-       System.out.println(newArgs[0].getClass().getName());
+ 
        for (int ii=0;ii<args.length;ii++) {
            if (newArgs[ii].getClass().getName().startsWith("com.sun.proxy")) {
-               System.out.println("Deu certoooo!!!");
+
                parameterTypes[ii] = (Class) args[ii];
                oos.writeObject("Begin of callback");
                isCallback = true;
            } else
            parameterTypes[ii] = args[ii].getClass();
-           System.out.println(parameterTypes[ii].getName());
+       
        }
        }
-       System.out.println(methodName);
+
         Method method = this.remoteObject.getClass().getMethod(methodName, parameterTypes);
                 
        returnObject = method.invoke(remoteObject, newArgs);
        
       if (isCallback) { oos.writeObject("End of callback");
-      System.out.println("FIm dos métodos de callback");
+     
       }
       else oos.writeObject("Go on!");
        

@@ -7,31 +7,30 @@
 package chatclient;
 
 import chatinterface.ClientInterface;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 
+import idmr3.*;
 /**
  *
  * @author Marlon
  */
-public class ChatClient extends UnicastRemoteObject implements ClientInterface {
+public class ChatClient extends RemoteObject implements ClientInterface {
     
     private final String userName;
     private final ChatFrame frame;
     
-    public ChatClient(String userName, ChatFrame frame) throws RemoteException
+    public ChatClient(String userName, ChatFrame frame) 
     {
         this.userName = userName;
         this.frame = frame;
     }
     
    @Override
-   public String getClientName() throws RemoteException
+   public String getClientName() 
    {
        return this.userName;
    }
    @Override
-   public void displayMsg(String sender, String msg) throws RemoteException
+   public void displayMsg(String sender, String msg) 
    {
        this.frame.displayMsg(sender, msg);
        System.out.println(sender +  ": " + msg);

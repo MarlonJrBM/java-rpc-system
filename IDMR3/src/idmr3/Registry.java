@@ -68,8 +68,7 @@ public class Registry extends RemoteObject {
         if (skt!=null)
             try {
                 oos.writeObject("Bye Bye Server!");
-                oos.close();
-                ois.close();
+                
                 skt.close();
                 
         } catch (IOException ex) {
@@ -84,7 +83,7 @@ public class Registry extends RemoteObject {
         Class[] interfaces = null;
         this.connectionHandler = new ConnectionHandler(name, this.skt, this.oos, this.ois);
         interfaces = getInterfaces(name) ; //Lê as interfaces
-        System.out.println(interfaces.toString());
+        
         stub =  StubFactory.getStub(interfaces, connectionHandler); //Cria o proxy
         
         return stub;

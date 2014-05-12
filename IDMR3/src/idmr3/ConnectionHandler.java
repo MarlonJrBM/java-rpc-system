@@ -72,14 +72,14 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
         Boolean isCallback;
         String methodName;
         Object [] argsAgain;
-        System.out.println("Fui invocado: " + method.getName() );
+        
 //       return method.invoke(target, args);
         
         //envia método e argumentos para o servidor executar no objeto
 
 //        Person test = new Person ("marlon", "marques");
         this.sendRemoteObject(method.getName()); //envia nome do método
-        System.out.println("Escrevi objeto remoto na stream: " + method.getName());
+       
         //E se um dos args for um objeto remoto do cliente? 
         //Tem que fazer lógica do callback
         
@@ -90,11 +90,11 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
                 if (args[ii] instanceof RemoteObject) {
                     newArgs[ii] = args[ii].getClass().getInterfaces()[0];
                     callbackObjects.put(args[ii].toString(), args[ii]);
-                    System.out.println(args[ii].getClass().getInterfaces()[0].getName());
+                  
                 }
                 else {
                     newArgs[ii] = args[ii];
-                    System.out.println("Não entrei nesse if maldito");
+                  
                 }
             }
             }
@@ -102,14 +102,12 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
             if (newArgs!=null)
             for (int ii=0;ii<newArgs.length;ii++) {
                 if (newArgs[ii].toString().startsWith("interface ")) {
-                    System.out.println("Mandou interface");
+               
                     oos.writeObject(args[ii].toString()); //envia nome que representa o objeto
                     oos.writeObject(newArgs[ii]); //envia interface por interface
                     
                 }
-                else {
-                    System.out.println("Não to mandando nada");
-                }
+                
             }
             
         
@@ -124,7 +122,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
             isCallback = true;
             while (isCallback) {
                 methodName = ois.readObject().toString();
-                System.out.println("Método de callback: "  + methodName);
+                
                 if (methodName.contentEquals("End of callback")) {
                     isCallback = false;
                 }
@@ -149,10 +147,7 @@ public class ConnectionHandler extends RemoteObject implements InvocationHandler
         
         
         
-         //envia os argumentos
-//        System.out.println("Escrevi objeto remoto na stream: " + args[0].toString());
-//        System.out.println("Escrevi objeto remoto na stream: " + args[1].toString());
-        
+
         
  
         //espera retorno do método que foi executado no server

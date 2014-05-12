@@ -13,7 +13,8 @@ import idmr3.*;
  * @author Marlon
  */
 public interface ServerInterface extends Remote {
-    public void send(ClientInterface sender, String msg);
+    public void send(ClientInterface sender, String msg) ;
     public void connect(ClientInterface c) ;
     public void disconnect(ClientInterface c) ;
+    
 }

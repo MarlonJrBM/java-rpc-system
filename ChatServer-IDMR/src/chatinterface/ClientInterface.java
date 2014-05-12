@@ -4,19 +4,18 @@
  * and open the template in the editor.
  */
 
-package idmr3;
+package chatinterface;
+
+import idmr3.*;
 
 /**
  *
  * @author Marlon
  */
-public class IDMR3 {
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        // TODO code application logic here
-    }
+public interface ClientInterface extends Remote {
+    
+    public void displayMsg(String sender, String msg);
+    
+    public String getClientName();
     
 }

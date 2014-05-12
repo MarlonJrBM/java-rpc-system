@@ -6,14 +6,12 @@
 
 package chatclient;
 
-import java.rmi.Naming;
+
 import java.awt.event.KeyEvent;
-import java.rmi.RemoteException;
-import java.rmi.registry.Registry;
+import idmr3.*;
 import chatinterface.*;
 import java.io.*;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.NotBoundException;
+
 
 /**
  *
@@ -38,10 +36,10 @@ public class ChatFrame extends javax.swing.JFrame {
     static Registry r = null;
     static Integer exitCode = 0;
      
-    public void connectToServer(String addr, String userName) throws 
-            RemoteException, NotBoundException
+    public void connectToServer(String addr, String userName)
     {
-        r = LocateRegistry.getRegistry(addr, 1099);
+        r = new Registry();
+        r.connectToRemote(addr, 1099);
         server = (ServerInterface) r.lookup("ChatServer");
         client =  (ClientInterface) new ChatClient(userName, this);
         connected = true;
@@ -66,7 +64,7 @@ public class ChatFrame extends javax.swing.JFrame {
     /**
      * Creates new form ChatFrame
      */
-    public ChatFrame() throws RemoteException {
+    public ChatFrame()  {
         initComponents();
     }
 
@@ -266,10 +264,10 @@ public class ChatFrame extends javax.swing.JFrame {
         try {
             msg = this.jTextArea1.getText().replace("\n", "");
         if(!msg.trim().contentEquals("") )
-                    this.server.send(client.getClientName(), msg);
+                    this.server.send(client, msg);
                 this.jTextArea1.setText("");
         }
-        catch (RemoteException e)
+        catch (Exception e)
         {
             System.out.println("ChatClient Exception!" + e);
             exitCode = 666;
@@ -292,7 +290,7 @@ public class ChatFrame extends javax.swing.JFrame {
         connectToServer(addr, userName);
         
         }
-        catch (RemoteException | NotBoundException | NoUserNameException e)
+        catch (Exception e)
         {
             System.out.println("ChatClient Exception!" + e);
             exitCode = 666;
@@ -331,13 +329,14 @@ public class ChatFrame extends javax.swing.JFrame {
         if (server!= null && client!= null)
         {
             server.disconnect(client);
+            r.disconnectFromRemote();  
             System.out.println("Disconnecting from server...");
             connected = false;
             clearScreen();
             conectDialog.setVisible(true);
         }
         }
-        catch (RemoteException e )
+        catch (Exception e )
                 {
                     System.out.println("ChatClient Exception!" + e);
                 }
@@ -351,7 +350,9 @@ public class ChatFrame extends javax.swing.JFrame {
         //connection was established.
         if (!connected)
         {
+             
             System.exit(exitCode);
+            
         }
     }//GEN-LAST:event_onDialogClosing
 
@@ -425,12 +426,13 @@ public class ChatFrame extends javax.swing.JFrame {
                 try {
                 new ChatFrame().setVisible(true);
                 }
-                catch (RemoteException e )
+                catch (Exception e )
                 {
                     System.out.println("ChatClient Exception!" + e);
                 }
      
             }
+            
         });
     }
 
